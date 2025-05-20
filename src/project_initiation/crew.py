@@ -14,7 +14,7 @@ class ProjectInitiation():
 
     
     # In your crew initialization
-    llm = ChatAnthropic(model="claude-3-haiku-20240307", 
+    llm = ChatAnthropic(model="claude-3-haiku-20240307",                        
                     anthropic_api_key=os.environ.get("ANTHROPIC_API_KEY"))
     """ProjectInitiation crew"""
 

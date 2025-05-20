@@ -1,17 +1,89 @@
-research_task:
+document_analysis:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+  
+      Retrieve and analyze all available project documents (project brief, kickoff meeting transcripts, requirements docs, etc.). 
+      Identify key information including project goals, requirements, constraints, stakeholders, and timelines tailored for the project {domain}.
+      Highlight any inconsistencies or gaps between documents, creating a list of items needing clarification.
+      Share an initial summary of your understanding and identify 3-5 key clarification questions to begin the collaborative process.
+  
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    Initial document analysis summary and clarification questions
+  agent: business_analyst
 
-reporting_task:
+section_development:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Based on the template provided in the reference document, 
+    break down the scope document creation into logical sections 
+    (Executive Summary, Project Objectives, Scope Definition, etc.).
+    For each section:
+      1. Draft content based on available information
+      2. Proactively make recommendations where information is incomplete
+      3. Clearly mark assumptions you've made that require validation
+      4. Present each section to the user for feedback
+      5. Explicitly ask specific questions about unclear items
+      6. Incorporate feedback before moving to the next section
+      7. Provide only hiogh level informatuion about the technical aspects based on the information you handled
+      so far on the project as it will be handled by the technical lead. 
+      
+      Present conflicts between source documents clearly, 
+      explaining the nature of each conflict and requesting user guidance on resolution.
+
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    Draft sections with clearly marked assumptions, recommendations, and questions
+    
+  agent: business_analyst
+
+
+business_document_compilation:
+  description: >
+    Once all sections have received user feedback and approval, compile them into a final comprehensive scope document.
+    Present the complete document to the user for final review.
+    Highlight areas where your industry expertise suggests potential risks or opportunities that may not be explicitly addressed.
+    After final user approval, format the document according to the provided output standards.
+
+  expected_output: >
+    Final approved scope document stored in vector database with confirmation
+
+  agent: business_analyst
+
+
+  technical_document_review:
+  description: >
+    Review the technical aspects of the scope document retrived from the business analyst agent,  
+    ensuring that all technical specifications, architecture recommendations, and resource requirements are clearly defined.
+    Provide feedback on the technical feasibility of the proposed solutions, 
+    identifying any potential risks or challenges that may arise during implementation.
+   
+    Identify sections requiring technical expansion, particularly:
+      - Technical Implementation
+      - Team Structure (technical skill requirements)
+      - Risk Assessment (technical risks)
+      - Assumptions and Constraints (technical constraints)
+      
+      Review the high-level requirements and business objectives to ensure your technical recommendations will align with the project goals.
+      Create a list of technical clarification questions needed before providing detailed recommendations.
+      
+      Share an initial assessment of the technical aspects of the project and present your clarification questions to the user.
+  
+  expected_output: Initial technical assessment and clarification questions
+  agent: technical_lead_scope_specialist
+
+
+  document_finalization:
+  description: >
+    Based on the feedback from the technical review, 
+    expand and refine the technical sections of the scope document.
+    Make edits to the relevant sections, provide detailed technical specifications, architecture recommendations, and resource requirements.
+    Ensure that all technical aspects are clearly defined and aligned with the project goals.
+    
+    Highlight any potential risks or challenges that may arise during implementation, 
+    and provide recommendations for mitigating these risks.
+    
+    Present the updated document to the user for final review, 
+    ensuring that all technical aspects are clearly defined and aligned with the project goals.
+
+    After final user approval, format the document according to the provided output standards.
+  expected_output: >
+    Final approved technical scope document stored in vector database with confirmation
+  agent: technical_lead_scope_specialist
+  # Note: The document_finalization task is a continuation of the business_document_compilation task

@@ -156,3 +156,75 @@ class ProjectScopeDocument(BaseModel):
     approval_and_sign_off: ApprovalAndSignOff = Field(..., description="Approval and Sign-off")
     appendices: Appendices = Field(..., description="Appendices")
     document_control: DocumentControl = Field(..., description="Document Control")
+
+
+# For Roadmap
+# Models for structured data (tables and prioritized features)
+class Feature(BaseModel):
+    name: str = Field(description="Feature name")
+    description: Optional[str] = Field(None, description="Feature description")
+
+class PrioritizedFeatures(BaseModel):
+    must_have: List[Feature] = Field(description="Critical features for launch")
+    should_have: List[Feature] = Field(description="Important but not blocking features")
+    could_have: List[Feature] = Field(description="Desired enhancement features")
+
+class TimelinePhase(BaseModel):
+    phase: str = Field(description="Phase name")
+    timeframe: str = Field(description="Timeframe for the phase")
+    deliverables: str = Field(description="Deliverables for the phase")
+    owner: Optional[str] = Field(None, description="Owner of the phase")
+
+class Risk(BaseModel):
+    risk: str = Field(description="Risk description")
+    impact: str = Field(description="High/Med/Low")
+    likelihood: str = Field(description="High/Med/Low")
+    mitigation: str = Field(description="Mitigation strategy")
+
+class Decision(BaseModel):
+    date: str = Field(description="Decision date")
+    decision: str = Field(description="Decision made")
+    rationale: str = Field(description="Rationale for decision")
+    alternatives_considered: Optional[str] = Field(None, description="Alternatives considered")
+
+# Main Product Roadmap model
+class ProductRoadmap(BaseModel):
+    # Executive Summary
+    executive_summary: str = Field(description="One paragraph overview of the product")
+    
+    # Product Vision
+    problem_statement: str = Field(description="What problem are we solving?")
+    strategic_alignment: str = Field(description="How does this align with company strategy?")
+    one_year_vision: str = Field(description="What does success look like in 1 year?")
+    
+    # Target Users
+    primary_user_persona: str = Field(description="Primary user persona")
+    key_user_needs: List[str] = Field(description="Key user needs")
+    needs_validation_method: str = Field(description="How we validate these needs")
+    
+    # Core Features
+    features: PrioritizedFeatures = Field(description="Prioritized features")
+    
+    # Timeline
+    timeline: List[TimelinePhase] = Field(description="Project timeline by phase")
+    
+    # Resource Requirements
+    team_composition: List[str] = Field(description="Team composition")
+    budget: str = Field(description="Budget requirements")
+    tools_technologies: List[str] = Field(description="Tools and technologies needed")
+    
+    # Success Metrics
+    primary_kpi: str = Field(description="Primary KPI")
+    secondary_metrics: List[str] = Field(description="Secondary metrics")
+    data_collection_method: str = Field(description="Data collection method")
+    
+    # Risks & Mitigation
+    risks: List[Risk] = Field(description="Risks and mitigation strategies")
+    
+    # Decision Log
+    decisions: List[Decision] = Field(description="Decision log")
+    
+    # Next Steps
+    immediate_actions: List[str] = Field(description="Immediate actions for next 2 weeks")
+    stakeholder_approvals: List[str] = Field(description="Key stakeholder approvals needed")
+    open_questions: List[str] = Field(description="Open questions to resolve")

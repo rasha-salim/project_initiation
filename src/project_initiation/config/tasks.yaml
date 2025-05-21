@@ -7,10 +7,9 @@ document_analysis:
       Share an initial summary of your understanding and identify 3-5 key clarification questions to begin the collaborative process.
   
   expected_output: >
-    Initial document analysis summary and clarification questions
-  agent: business_analyst
+    Initial analysis summary and clarification questions
 
-section_development:
+scope_development:
   description: >
     Based on the template provided in the reference document, 
     break down the scope document creation into logical sections 
@@ -27,63 +26,55 @@ section_development:
       
       Present conflicts between source documents clearly, 
       explaining the nature of each conflict and requesting user guidance on resolution.
+      Once all sections have received user feedback and approval, compile them into a final comprehensive scope document.
+      Present the complete document to the user for final review.
+      Highlight areas where your industry expertise suggests potential risks or opportunities that may not be explicitly addressed.
+      After final user approval, format the document according to the provided output standards.
+
 
   expected_output: >
-    Draft sections with clearly marked assumptions, recommendations, and questions
-    
-  agent: business_analyst
+    Final approved scope document compoenets according to the provided output standards.
 
 
-business_document_compilation:
+technical_sections_expansion:
   description: >
-    Once all sections have received user feedback and approval, compile them into a final comprehensive scope document.
-    Present the complete document to the user for final review.
-    Highlight areas where your industry expertise suggests potential risks or opportunities that may not be explicitly addressed.
-    After final user approval, format the document according to the provided output standards.
-
-  expected_output: >
-    Final approved scope document stored in vector database with confirmation
-
-  agent: business_analyst
-
-
-  technical_document_review:
-  description: >
-    Review the technical aspects of the scope document retrived from the business analyst agent,  
-    ensuring that all technical specifications, architecture recommendations, and resource requirements are clearly defined.
+    Review the scope components retrived from the business analyst agent,  
+    and expand on the all the technical specifications making sure that architecture recommendations and resource requirements are clearly defined.
     Provide feedback on the technical feasibility of the proposed solutions, 
-    identifying any potential risks or challenges that may arise during implementation.
+    and finalize parts like the scope based on the infoirmation provided in the components and based on user input when there are multiple options. 
+    Identify any potential risks or challenges that may arise during implementation.
    
-    Identify sections requiring technical expansion, particularly:
-      - Technical Implementation
-      - Team Structure (technical skill requirements)
-      - Risk Assessment (technical risks)
-      - Assumptions and Constraints (technical constraints)
-      
-      Review the high-level requirements and business objectives to ensure your technical recommendations will align with the project goals.
+    Focus on the following items when providing technical expansion:
+      - ScopeDefinition and its components
+      - TechnicalChallenge
+      - Constraints (specifically technical constraints)
+      - The TechnicalImplementation elements
+      - Team Structure and Resources
+      - Dependencies
+      - any additional suggestions on the RiskAssessment
+    
       Create a list of technical clarification questions needed before providing detailed recommendations.
-      
       Share an initial assessment of the technical aspects of the project and present your clarification questions to the user.
+      Once cleared present the final scope compoenets along with the updated scope sections.
   
-  expected_output: Initial technical assessment and clarification questions
-  agent: technical_lead_scope_specialist
+  expected_output: Final scope document with all its components and the technical sections expanded and clarified in the standards provided.
 
-
-  document_finalization:
+review_and_approval:
   description: >
-    Based on the feedback from the technical review, 
-    expand and refine the technical sections of the scope document.
-    Make edits to the relevant sections, provide detailed technical specifications, architecture recommendations, and resource requirements.
-    Ensure that all technical aspects are clearly defined and aligned with the project goals.
-    
-    Highlight any potential risks or challenges that may arise during implementation, 
-    and provide recommendations for mitigating these risks.
-    
-    Present the updated document to the user for final review, 
-    ensuring that all technical aspects are clearly defined and aligned with the project goals.
-
-    After final user approval, format the document according to the provided output standards.
+    - Aggregate the information and provided by the business analyst agent and the technical lead.
+    - Present the final scope document to the user for review.
+    - Highlight areas where your industry expertise suggests potential risks or opportunities that may not be explicitly addressed.
+    - Provide a summary of the key points and recommendations for the user to consider.
+    - Clearly outline any assumptions made during the analysis and development process.
   expected_output: >
-    Final approved technical scope document stored in vector database with confirmation
-  agent: technical_lead_scope_specialist
-  # Note: The document_finalization task is a continuation of the business_document_compilation task
+    Final scope document with all its components and the technical sections expanded and clarified in the standards provided.
+
+
+roadmap_development:
+  description: >
+    Based on the final approved scope document, 
+    develop a detailed project roadmap that outlines key milestones, deliverables, and timelines.
+    Ensure that the roadmap aligns with the project goals and objectives, 
+    and provides a clear path for successful project
+  expected_output: >
+    Project roadmap with key milestones and timelines in the standards provided.

@@ -7,7 +7,8 @@ document_analysis:
       Share an initial summary of your understanding and identify 3-5 key clarification questions to begin the collaborative process.
   
   expected_output: >
-    Initial analysis summary and clarification questions
+    detailed analysis, summary pf the prject scope details, and clarification questions
+  agent: business_analyst
 
 scope_development:
   description: >
@@ -34,8 +35,8 @@ scope_development:
 
   expected_output: >
     Final approved scope document compoenets according to the provided output standards.
-
-
+  agent: business_analyst
+  
 technical_sections_expansion:
   description: >
     Review the scope components retrived from the business analyst agent,  
@@ -58,6 +59,7 @@ technical_sections_expansion:
       Once cleared present the final scope compoenets along with the updated scope sections.
   
   expected_output: Final scope document with all its components and the technical sections expanded and clarified in the standards provided.
+  agent: technical_lead_scope_specialist
 
 review_and_approval:
   description: >
@@ -69,6 +71,7 @@ review_and_approval:
   expected_output: >
     Final scope document with all its components and the technical sections expanded and clarified in the standards provided.
 
+  agent: chief_product_officer
 
 roadmap_development:
   description: >
@@ -78,3 +81,5 @@ roadmap_development:
     and provides a clear path for successful project
   expected_output: >
     Project roadmap with key milestones and timelines in the standards provided.
+
+  agent: product_manager

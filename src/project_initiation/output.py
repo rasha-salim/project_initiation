@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
-
+from typing import List, Optional, Dict, Any    
+# :Optional[str] = None  # To make fields optional
 # Define models for tables and nested structures
 class SmartGoal(BaseModel):
     goal: str = Field(..., description="Goal name")
@@ -33,16 +33,16 @@ class Milestone(BaseModel):
     target_date: str = Field(..., description="Target date")
     dependencies: str = Field(..., description="Dependencies")
 
-class CostCategory(BaseModel):
-    category: str = Field(..., description="Cost category")
-    description: str = Field(..., description="Description")
-    estimated_cost: str = Field(..., description="Estimated cost")
+#class CostCategory(BaseModel):
+    #category: str = Field(..., description="Cost category")
+    #description: str = Field(..., description="Description")
+    #estimated_cost: str = Field(..., description="Estimated cost")
 
-class BudgetScenario(BaseModel):
-    scenario: str = Field(..., description="Budget scenario (Optimistic/Realistic/Pessimistic)")
-    total_cost: str = Field(..., description="Total cost")
-    key_assumptions: str = Field(..., description="Key assumptions")
-    impact: str = Field(..., description="Impact")
+#class BudgetScenario(BaseModel):
+    #scenario: str = Field(..., description="Budget scenario (Optimistic/Realistic/Pessimistic)")
+    #total_cost: str = Field(..., description="Total cost")
+    #key_assumptions: str = Field(..., description="Key assumptions")
+    #impact: str = Field(..., description="Impact")
 
 class Risk(BaseModel):
     risk: str = Field(..., description="Risk description")
@@ -51,13 +51,13 @@ class Risk(BaseModel):
     risk_score: str = Field(..., description="Risk score")
     mitigation_strategy: str = Field(..., description="Mitigation strategy")
 
-class Stakeholder(BaseModel):
-    stakeholder: str = Field(..., description="Stakeholder name")
-    role: str = Field(..., description="Stakeholder role")
-    date: Optional[str] = Field(None, description="Sign-off date")
-    signature: Optional[str] = Field(None, description="Signature")
+#class Stakeholder(BaseModel):
+    #stakeholder: str = Field(..., description="Stakeholder name")
+    #role: str = Field(..., description="Stakeholder role")
+    #date: Optional[str] = Field(None, description="Sign-off date")
+    #signature: Optional[str] = Field(None, description="Signature")
 
-class GlossaryTerm(BaseModel):
+#class GlossaryTerm(BaseModel):
     term: str = Field(..., description="Term")
     definition: str = Field(..., description="Definition")
 
@@ -70,13 +70,13 @@ class ProjectObjectives(BaseModel):
     smart_goals: List[SmartGoal] = Field(..., description="SMART goals")
     success_criteria_and_kpis: str = Field(..., description="Success criteria and KPIs")
 
-class ExpectedBenefits(BaseModel):
-    quantitative_benefits: List[str] = Field(..., description="Quantitative benefits")
-    qualitative_benefits: List[str] = Field(..., description="Qualitative benefits")
+#class ExpectedBenefits(BaseModel):
+    #quantitative_benefits: List[str] = Field(..., description="Quantitative benefits")
+    #qualitative_benefits: List[str] = Field(..., description="Qualitative benefits")
 
 class ProjectJustification(BaseModel):
     business_case_summary: str = Field(..., description="Business case summary")
-    expected_benefits: ExpectedBenefits = Field(..., description="Expected benefits")
+    #expected_benefits: ExpectedBenefits = Field(..., description="Expected benefits")
     strategic_alignment: str = Field(..., description="Strategic alignment")
     roi_projections: str = Field(..., description="ROI projections")
 
@@ -87,7 +87,7 @@ class ScopeInScope(BaseModel):
 
 class ScopeDefinition(BaseModel):
     in_scope: ScopeInScope = Field(..., description="In scope items")
-    out_of_scope: List[str] = Field(..., description="Out of scope items")
+    #out_of_scope: List[str] = Field(..., description="Out of scope items")
     minimum_viable_product: str = Field(..., description="Minimum viable product")
     future_phases: str = Field(..., description="Future phases")
 
@@ -96,7 +96,7 @@ class Constraints(BaseModel):
     timeline_constraints: str = Field(..., description="Timeline constraints")
     technical_constraints: str = Field(..., description="Technical constraints")
     resource_constraints: str = Field(..., description="Resource constraints")
-    regulatory_compliance_constraints: str = Field(..., description="Regulatory/compliance constraints")
+    #regulatory_compliance_constraints: str = Field(..., description="Regulatory/compliance constraints")
 
 class AssumptionsAndConstraints(BaseModel):
     key_assumptions: List[str] = Field(..., description="Key assumptions")
@@ -107,39 +107,39 @@ class TechnicalImplementation(BaseModel):
     architecture_overview: str = Field(..., description="Architecture overview")
     integration_requirements: str = Field(..., description="Integration requirements")
     technical_challenges_and_solutions: List[TechnicalChallenge] = Field(..., description="Technical challenges and solutions")
-    security_and_compliance: str = Field(..., description="Security and compliance")
+    security_and_compliance: str = Field(..., description="Security and compliance")  
 
-class TeamStructureAndResources(BaseModel):
-    required_roles_and_responsibilities: List[TeamRole] = Field(..., description="Required roles and responsibilities")
-    external_resources: str = Field(..., description="External resources")
+#class TeamStructureAndResources(BaseModel):
+    #required_roles_and_responsibilities: List[TeamRole] = Field(..., description="Required roles and responsibilities")
+    #external_resources: str = Field(..., description="External resources")
 
-class TimelineAndMilestones(BaseModel):
-    high_level_schedule: List[Phase] = Field(..., description="High-level schedule")
-    key_milestones: List[Milestone] = Field(..., description="Key milestones")
-    dependencies: str = Field(..., description="Dependencies")
+#class TimelineAndMilestones(BaseModel):
+    #high_level_schedule: List[Phase] = Field(..., description="High-level schedule")
+    #key_milestones: List[Milestone] = Field(..., description="Key milestones")
+    #dependencies: str = Field(..., description="Dependencies")
 
-class BudgetProjection(BaseModel):
-    cost_breakdown: List[CostCategory] = Field(..., description="Cost breakdown")
-    budget_scenarios: List[BudgetScenario] = Field(..., description="Budget scenarios")
-    cost_saving_opportunities: str = Field(..., description="Cost-saving opportunities")
+#class BudgetProjection(BaseModel):
+    #cost_breakdown: List[CostCategory] = Field(..., description="Cost breakdown")
+    #budget_scenarios: List[BudgetScenario] = Field(..., description="Budget scenarios")
+    #cost_saving_opportunities: str = Field(..., description="Cost-saving opportunities")
 
 class RiskAssessment(BaseModel):
     key_risks: List[Risk] = Field(..., description="Key risks")
     contingency_plans: str = Field(..., description="Contingency plans")
 
-class ApprovalAndSignOff(BaseModel):
-    key_stakeholders: List[Stakeholder] = Field(..., description="Key stakeholders")
-    change_management_process: str = Field(..., description="Change management process")
+#class ApprovalAndSignOff(BaseModel):
+    #key_stakeholders: List[Stakeholder] = Field(..., description="Key stakeholders")
+    #change_management_process: str = Field(..., description="Change management process")
 
-class Appendices(BaseModel):
-    supporting_documentation: str = Field(..., description="Supporting documentation")
-    glossary: List[GlossaryTerm] = Field(..., description="Glossary")
+#class Appendices(BaseModel):
+    #supporting_documentation: str = Field(..., description="Supporting documentation")
+    #glossary: List[GlossaryTerm] = Field(..., description="Glossary")
 
-class DocumentControl(BaseModel):
-    version: str = Field(..., description="Document version")
-    last_updated: str = Field(..., description="Last updated date")
-    prepared_by: str = Field(..., description="Prepared by")
-    approved_by: str = Field(..., description="Approved by")
+#class DocumentControl(BaseModel):
+   # version: str = Field(..., description="Document version")
+    #last_updated: str = Field(..., description="Last updated date")
+   # prepared_by: str = Field(..., description="Prepared by")
+    #approved_by: str = Field(..., description="Approved by")
 
 # Main Project Scope Document model
 class ProjectScopeDocument(BaseModel):
@@ -149,13 +149,15 @@ class ProjectScopeDocument(BaseModel):
     scope_definition: ScopeDefinition = Field(..., description="Scope Definition")
     assumptions_and_constraints: AssumptionsAndConstraints = Field(..., description="Assumptions and Constraints")
     technical_implementation: TechnicalImplementation = Field(..., description="Technical Implementation")
-    team_structure_and_resources: TeamStructureAndResources = Field(..., description="Team Structure and Resources")
-    timeline_and_milestones: TimelineAndMilestones = Field(..., description="Timeline and Milestones")
-    budget_projection: BudgetProjection = Field(..., description="Budget Projection")
+    #team_structure_and_resources: TeamStructureAndResources = Field(..., description="Team Structure and Resources")
+    #timeline_and_milestones: TimelineAndMilestones = Field(..., description="Timeline and Milestones")
+    #budget_projection: BudgetProjection = Field(..., description="Budget Projection")
     risk_assessment: RiskAssessment = Field(..., description="Risk Assessment")
-    approval_and_sign_off: ApprovalAndSignOff = Field(..., description="Approval and Sign-off")
-    appendices: Appendices = Field(..., description="Appendices")
-    document_control: DocumentControl = Field(..., description="Document Control")
+    #approval_and_sign_off: ApprovalAndSignOff = Field(..., description="Approval and Sign-off")
+    #appendices: Appendices = Field(..., description="Appendices")
+    #document_control: DocumentControl = Field(..., description="Document Control")
+    class Config:
+        extra = "ignore"  # Ignore extra fields not in the model
 
 
 # For Roadmap
@@ -226,5 +228,5 @@ class ProductRoadmap(BaseModel):
     
     # Next Steps
     immediate_actions: List[str] = Field(description="Immediate actions for next 2 weeks")
-    stakeholder_approvals: List[str] = Field(description="Key stakeholder approvals needed")
+    #stakeholder_approvals: List[str] = Field(description="Key stakeholder approvals needed")
     open_questions: List[str] = Field(description="Open questions to resolve")

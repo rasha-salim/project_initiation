@@ -7,8 +7,8 @@ import os
 from .output import ProjectScopeDocument, ProductRoadmap
 from langchain.output_parsers import PydanticOutputParser
 from .tools.custom_tool import (SafeFileReadTool, KnowledgeSearchTool)
-from .rag_utils import RAGContextRetriever
-from .task_context_provider import TaskContextProvider
+from .utils.rag_utils import RAGContextRetriever
+from .utils.task_context_provider import TaskContextProvider
 from src.project_initiation.create_vectore_database import create_vector_database
 
 

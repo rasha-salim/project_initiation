@@ -14,14 +14,14 @@ def main():
     print("Testing RAG pipeline components...")
     
     # Test the RAG retriever directly
-    from src.project_initiation.rag_utils import RAGContextRetriever
+    from src.project_initiation.utils.rag_utils import RAGContextRetriever
     print("\n1. Testing RAG retriever...")
     rag = RAGContextRetriever()
     context = rag.format_context_for_task("project requirements")
     print(f"Retrieved context sample: {context[:150]}...\n")
     
     # Test the task context provider
-    from src.project_initiation.task_context_provider import TaskContextProvider
+    from src.project_initiation.utils.task_context_provider import TaskContextProvider
     from crewai import Task
     print("2. Testing task context provider...")
     task_provider = TaskContextProvider(rag)

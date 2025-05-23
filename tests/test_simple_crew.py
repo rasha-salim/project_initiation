@@ -12,8 +12,8 @@ load_dotenv()
 os.environ["CREWAI_DISABLE_FORMATTING"] = "true"
 
 from crewai import Agent, Task, Crew, Process
-from src.project_initiation.rag_utils import RAGContextRetriever
-from src.project_initiation.task_context_provider import TaskContextProvider
+from src.project_initiation.utils.rag_utils import RAGContextRetriever
+from src.project_initiation.utils.task_context_provider import TaskContextProvider
 from langchain_anthropic import ChatAnthropic
 
 def main():

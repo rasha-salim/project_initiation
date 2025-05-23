@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Test the RAG retriever
-from src.project_initiation.rag_utils import RAGContextRetriever
-from src.project_initiation.task_context_provider import TaskContextProvider
+from src.project_initiation.utils.rag_utils import RAGContextRetriever
+from src.project_initiation.utils.task_context_provider import TaskContextProvider
 from crewai import Task
 
 def main():

@@ -3,10 +3,10 @@ from langchain.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import Chroma
-
+# ...rest of your code...
 # Set paths
 documents_dir = "./knowledge/"
-vector_db_dir = "./vector_db/"
+vector_db_dir = "./db/"
 
 def create_vector_database():
     # 1. Load documents from the directory
@@ -39,11 +39,3 @@ def create_vector_database():
     print(f"Vector database created and saved to {vector_db_dir}")
     
     return vector_db
-
-# Run this function once to create your database
-if not os.path.exists(vector_db_dir):
-    vector_db = create_vector_database()
-
-
-
-create_vector_database()

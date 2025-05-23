@@ -5,9 +5,12 @@ document_analysis:
       Identify key information including project goals, requirements, constraints, stakeholders, and timelines tailored for the project {domain}.
       Highlight any inconsistencies or gaps between documents, creating a list of items needing clarification.
       Share an initial summary of your understanding and identify 3-5 key clarification questions to begin the collaborative process.
-  
+
+      If you find a problem or an error accessing the project details, don't hesitate to ask the user for help and provide dteails on the project.
+      Otherwise you can share a message saying "I can't provide any information without the proper access to the project details" and stop the process".
+      And share the error message you received.
   expected_output: >
-    detailed analysis, summary pf the prject scope details, and clarification questions
+    detailed analysis of the prject scope details, and clarification questions for the user before passing it to the next agent. 
   agent: business_analyst
 
 scope_development:
@@ -45,7 +48,7 @@ technical_sections_expansion:
     and finalize parts like the scope based on the infoirmation provided in the components and based on user input when there are multiple options. 
     Identify any potential risks or challenges that may arise during implementation.
    
-    Focus on the following items when providing technical expansion:
+    Focus on the following items if when providing technical expansion (for the elements passed from the business analyst agent):
       - ScopeDefinition and its components
       - TechnicalChallenge
       - Constraints (specifically technical constraints)

@@ -1,13 +1,30 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
-from typing import List
+from typing import List, Dict
 from langchain_anthropic import ChatAnthropic
 import os
 from .output import ProjectScopeDocument, ProductRoadmap
-
 from langchain.output_parsers import PydanticOutputParser
-from crewai_tools import (FileReadTool)
+from .tools.custom_tool import (SafeFileReadTool, KnowledgeSearchTool)
+from .rag_utils import RAGContextRetriever
+from .task_context_provider import TaskContextProvider
+from src.project_initiation.create_vectore_database import create_vector_database
+
+
+#TODO#1:
+# 1. Embed the documents and store them in a vector database
+# 2. Use the vector database to retrieve the documents
+# 3. Pass the retrieved documents to the agents
+
+#TODO#2:
+# 1. Add the roadmap visualization tool, agent, and task
+# 2. Add the project scope visualization tool, agent, and task
+
+#TODO#3:
+# 1. Deploy te crew
+# 2. Create the app to run the crew
+
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
@@ -16,35 +33,7 @@ from crewai_tools import (FileReadTool)
 project_brief_path = "C:/Users/rasha/project_initiation/knowledge/Project_brief.md"
 meeting_transcript_path = "C:/Users/rasha/project_initiation/knowledge/prekickoff_transcript.md"
 
-# Create a custom wrapper for FileReadTool
-class SafeFileReadTool(FileReadTool):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-    
-    def _run(self, file_path=None, start_line=None, line_count=None, **kwargs):
-        # Sanitize inputs
-        file_path = file_path or self.file_path
-        start_line = 0 if start_line is None else start_line
-        line_count = -1 if line_count is None else line_count
-        
-        # Call the parent method with sanitized values
-        return super()._run(file_path=file_path, start_line=start_line, line_count=line_count, **kwargs)
-
-project_brief_tool = SafeFileReadTool(
-    name="Project Brief",
-    description="Project Brief document",
-    file_path=project_brief_path,
-    start_line=0,        # Add default starting line
-    line_count=-1)        # -1 could indicate "read all lines"
-
-
-
-meeting_transcript_tool = SafeFileReadTool(
-    name="Meeting Transcript",
-    description="Meeting Transcript document",
-    file_path=meeting_transcript_path,
-     start_line=0,        # Add default starting line
-    line_count=-1)        # -1 could indicate "read all lines"
+knowledge_tool = KnowledgeSearchTool()
 
 @CrewBase
 class ProjectInitiation():
@@ -61,6 +50,55 @@ class ProjectInitiation():
 
     agents: List[BaseAgent]
     tasks: List[Task]
+    
+    # Store enhanced tasks
+    _enhanced_tasks: Dict[str, Task] = {}
+    
+    # RAG components
+    rag_retriever: RAGContextRetriever = None
+    task_context_provider: TaskContextProvider = None
+    
+    def initialize_rag_pipeline(self):
+        """Initialize the RAG pipeline before the crew starts"""
+        print("Initializing RAG pipeline...")
+        
+        # Create or ensure the vector database exists
+        try:
+            create_vector_database()
+            print("Vector database created/updated successfully")
+        except Exception as e:
+            print(f"Warning: Error creating vector database: {str(e)}")
+            print("Continuing with existing vector database if available")
+        
+        # Initialize RAG components
+        self.rag_retriever = RAGContextRetriever()
+        self.task_context_provider = TaskContextProvider(self.rag_retriever)
+        
+        # Only enhance tasks if they exist (might not be initialized during testing)
+        if hasattr(self, 'tasks') and self.tasks:
+            print("Enhancing tasks with RAG context...")
+            # Map tasks to agent roles for context enhancement
+            task_agent_roles = {
+                "document_analysis": "business_analyst",
+                "scope_development": "product_manager",
+                "technical_sections_expansion": "technical_lead_scope_specialist",
+                "review_and_approval": "chief_product_officer",
+                "roadmap_development": "product_manager"
+            }
+            
+            # Enhance tasks with RAG context
+            task_dict = {task.id: task for task in self.tasks}
+            self._enhanced_tasks = self.task_context_provider.enhance_tasks(task_dict, task_agent_roles)
+            
+            # Replace original tasks with enhanced tasks
+            for i, task in enumerate(self.tasks):
+                if task.id in self._enhanced_tasks:
+                    self.tasks[i] = self._enhanced_tasks[task.id]
+            print("Tasks enhanced with context from the RAG pipeline")
+        else:
+            print("No tasks to enhance yet - RAG pipeline is ready for when tasks are created")
+        
+        print("RAG pipeline initialization complete")
 
     # Learn more about YAML configuration files here:
     # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
@@ -75,8 +113,7 @@ class ProjectInitiation():
             config=self.agents_config['business_analyst'], # type: ignore[index]
             verbose=True,
             llm=self.llm, 
-            tools=[project_brief_tool, meeting_transcript_tool],
-            human_input=True,
+            tools=[knowledge_tool]
         )
 
     @agent
@@ -86,7 +123,8 @@ class ProjectInitiation():
             verbose=True,
             llm=self.llm,
             allow_delegation=True,
-            delegation_timeout=60
+            delegation_timeout=60,
+            tools=[knowledge_tool]
         )
     
     @agent
@@ -97,7 +135,7 @@ class ProjectInitiation():
             allow_delegation=True,
             delegation_timeout=60,
             llm=self.llm,
-            allow_human_input=True
+            tools=[knowledge_tool]
         )
     
     @agent
@@ -107,8 +145,8 @@ class ProjectInitiation():
             verbose=True,
             llm=self.llm,
             allow_delegation=True,
-            delegation_timeout=60
-
+            delegation_timeout=60,
+            tools=[knowledge_tool]
         )
     
     # To learn more about structured task outputs,
@@ -126,8 +164,9 @@ class ProjectInitiation():
         return Task(
             config=self.tasks_config['scope_development'], # type: ignore[index]
             output_pydantic= ProjectScopeDocument,
-             output_parser= self.project_scope_parser,
-             output_file='project_scope.json'
+            output_parser= self.project_scope_parser,
+            output_file='project_scope_vdb.json',
+            human_input=True
         )
     
     @task
@@ -136,6 +175,7 @@ class ProjectInitiation():
             config=self.tasks_config['technical_sections_expansion'], # type: ignore[index]
             output_pydantic= ProjectScopeDocument,
             output_parser= self.project_scope_parser,
+            human_input=True
         
         )
     
@@ -145,7 +185,8 @@ class ProjectInitiation():
             config=self.tasks_config['review_and_approval'], # type: ignore[index]
             output_pydantic= ProjectScopeDocument,
             output_parser= self.project_scope_parser,
-            output_file='project_scope.json'
+            output_file='./output/project_scope_vdb.json',
+            human_input=True
         )
 
     
@@ -155,7 +196,8 @@ class ProjectInitiation():
             config=self.tasks_config['roadmap_development'], # type: ignore[index]
             output_pydantic= ProjectScopeDocument,
              output_parser= self.Project_roadmap_parser,
-             output_file='project_roadmap.json'
+             output_file='./output/project_roadmap.json',
+             human_input=True
         )
     
    
@@ -166,6 +208,9 @@ class ProjectInitiation():
         # To learn how to add knowledge sources to your crew, check out the documentation:
         # https://docs.crewai.com/concepts/knowledge#what-is-knowledge
 
+        # Initialize the RAG pipeline before creating the crew
+        self.initialize_rag_pipeline()
+        
         return Crew(
             agents=self.agents, # Automatically created by the @agent decorator
             tasks=self.tasks, # Automatically created by the @task decorator

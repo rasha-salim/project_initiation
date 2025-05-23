@@ -1,54 +1,58 @@
-# ProjectInitiation Crew
+# Project Initiation
 
-Welcome to the ProjectInitiation Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+Welcome to the Project Initiation repository! This project provides a template for setting up a multi-agent AI system using [crewAI](https://crewai.com). The goal is to help you quickly configure, customize, and launch collaborative AI agents for complex workflows.
 
 ## Installation
 
-Ensure you have Python >=3.10 <3.13 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+**Requirements:**  
+- Python >=3.10, <3.13  
+- [UV](https://docs.astral.sh/uv/) for dependency management
 
-First, if you haven't already, install uv:
+**Steps:**
+
+1. Install UV (if not already installed):
+
+    ```bash
+    pip install uv
+    ```
+
+2. Navigate to your project directory and install dependencies:
+
+    ```bash
+    crewai install
+    ```
+
+## Configuration
+
+1. Add your `OPENAI_API_KEY` to the `.env` file.
+2. Edit agent and task configurations:
+    - `src/project_initiation/config/agents.yaml` — define your agents
+    - `src/project_initiation/config/tasks.yaml` — define your tasks
+3. Customize logic, tools, and arguments in:
+    - `src/project_initiation/crew.py`
+    - `src/project_initiation/main.py` (for custom agent/task inputs)
+
+## Usage
+
+To launch your AI crew and execute tasks, run:
 
 ```bash
-pip install uv
+crewai run
 ```
 
-Next, navigate to your project directory and install the dependencies:
+This will initialize your agents and assign tasks as specified in your configuration files. By default, the project generates a `project_roadmap.json` and `project_scope.json` in the root directory containing the results of your configured tasks.
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
-```
-### Customizing
+## Project Structure
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/project_initiation/config/agents.yaml` to define your agents
-- Modify `src/project_initiation/config/tasks.yaml` to define your tasks
-- Modify `src/project_initiation/crew.py` to add your own logic, tools and specific args
-- Modify `src/project_initiation/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
-
-```bash
-$ crewai run
-```
-
-This command initializes the project-initiation Crew, assembling the agents and assigning them tasks as defined in your configuration.
-
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
-
-## Understanding Your Crew
-
-The project-initiation Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+- **Agents:** Defined in `config/agents.yaml` with unique roles and capabilities.
+- **Tasks:** Outlined in `config/tasks.yaml` for collaborative execution.
+- **Logic & Tools:** Extend or modify in `crew.py` and `main.py` as needed.
 
 ## Support
 
-For support, questions, or feedback regarding the ProjectInitiation Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+- [Documentation](https://docs.crewai.com)
+- [GitHub Issues](https://github.com/joaomdmoura/crewai)
+- [Discord Community](https://discord.com/invite/X4JWnZnxPb)
+- [Docs Chat](https://chatg.pt/DWjSBZn)
 
-Let's create wonders together with the power and simplicity of crewAI.
+Empower your workflows with collaborative AI agents using crewAI!
